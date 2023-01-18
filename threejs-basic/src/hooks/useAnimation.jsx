@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import * as THREE from "three";
+import gsap from "gsap";
 export const useAnimation = () => {
   const createAScrene = () => {
     console.log("hello", THREE);
@@ -20,7 +21,7 @@ export const useAnimation = () => {
       width: 800,
       height: 600,
     };
-    const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height);
+    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
     camera.position.z = 3;
     scene.add(camera);
     //Get canvas element
@@ -33,8 +34,45 @@ export const useAnimation = () => {
     });
 
     renderer.setSize(sizes.width, sizes.height);
-
     renderer.render(scene, camera);
+
+    //animate with gsap
+    gsap.to(mesh.position, {
+      duration: 1,
+      delay: 1,
+      x: 2,
+    });
+
+    /**
+     * Animate
+     */
+    // let time = Date.now();
+    const clock = new THREE.Clock();
+
+    const tick = () => {
+      // Time
+      //   const currentTime = Date.now();
+      //   const deltaTime = currentTime - time;
+      //   time = currentTime;
+
+      //for constant animation indipent of FPS
+      const elapsedTime = clock.getElapsedTime();
+
+      // Update objects
+      //   mesh.rotation.y += 0.0025 * elapsedTime;
+
+      mesh.position.y = Math.sin(elapsedTime);
+      mesh.position.x = Math.cos(elapsedTime);
+      camera.lookAt(mesh.position);
+
+      // Render
+      renderer.render(scene, camera);
+
+      // Call tick again on the next frame
+      window.requestAnimationFrame(tick);
+    };
+
+    tick();
   };
   useEffect(() => {
     createAScrene();

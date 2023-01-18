@@ -1,9 +1,8 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
-import { useBasicScene } from "./useSimpleRender";
-import { useGroup } from "./useGroup";
-import { useAnimation } from "./useAnimation";
+
+import { useAnimation } from "./hooks/useAnimation";
 
 function App() {
   const [count, setCount] = useState(0);
